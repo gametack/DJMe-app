@@ -1,5 +1,7 @@
 import React from "react";
 import t from "tcomb-form-native";
+import Amplify, { API } from "aws-amplify";
+import { withAuthenticator } from "aws-amplify-react-native";
 import {
   StyleSheet,
   Text,
@@ -7,7 +9,8 @@ import {
   Button,
   TouchableHighlight
 } from "react-native";
-
+import awsConfig from "../aws-exports";
+Amplify.configure(awsConfig);
 const Form = t.form.Form;
 
 var Provider = t.enums({
@@ -23,6 +26,21 @@ const PartyFormStruct = t.struct({
 
 var options = {}; // optional rendering options (see documentation)
 export default class CreateParty extends React.Component {
+  async getSample() {
+    const path = "/party"; // you can specify the path
+
+    console.log("calling api");
+    const response = await API.post("djmeapi", path, {
+      body: {
+        id: Date.now(),
+        content:"test"
+      }
+    });
+    console.log(response);
+
+    let a=5
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -30,19 +48,19 @@ export default class CreateParty extends React.Component {
         <Form ref="form" type={PartyFormStruct} options={options} />
         <TouchableHighlight
           style={styles.button}
-          onPress={this.onPress}
+          onPress = {this.getSample.bind(this)}
           underlayColor="#99d9f4"
         >
           <Text
             style={styles.buttonText}
-            onPress={() => {
-              var value = this.refs.form.getValue();
-              if (value) {
-                console.log(value);
-              } else {
-                console.log("error");
-              }
-            }}
+            // onPress={() => {
+            //   var value = this.refs.form.getValue();
+            //   if (value) {
+            //     console.log(value);
+            //   } else {
+            //     console.log("error");
+            //   }
+            // }}
           >
             Create
           </Text>

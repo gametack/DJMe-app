@@ -13,7 +13,8 @@ class App extends React.Component {
     return <AppNavigator />;
   }
 }
-export default withAuthenticator(App);
+export default App;
+// export default withAuthenticator(App);
 const styles = StyleSheet.create({
   container: {
     flex: 1,

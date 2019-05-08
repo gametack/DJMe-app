@@ -11,7 +11,7 @@ export default class Home extends React.Component {
         />
         <Button
           title="Join Party"
-          onPress={() => this.props.navigation.navigate("CreateParty")}
+          onPress={() => this.props.navigation.navigate("Room")}
         />
       </View>
     );
