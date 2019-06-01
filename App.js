@@ -1,49 +1,50 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
+import Amplify from "aws-amplify";
+import React from 'react';
+import { withAuthenticator } from 'aws-amplify-react-native';
+// import awsConfig from "./aws-exports";
+import { NativeRouter, Switch, Route } from "react-router-native";
+import Home from "./src/components/home";
+import JoinRoom from './src/components/join-room'
+import CreateRoom from './src/components/create-room'
+import Room from './src/components/room'
+import DataStore from './src/store/domain/DataStore'
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+// Amplify.configure(awsConfig);
 
-type Props = {};
-export default class App extends Component<Props> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-      </View>
-    );
-  }
+const DataState = new DataStore()
+
+class App extends React.Component {
+    render() {
+        return (
+            <NativeRouter>
+                <Switch>
+
+                    <Route
+                        exact
+                        path="/"
+                        render={(props) => <Home {...props} />}
+                    />
+                    <Route
+                        exact
+                        path="/joinRoom"
+                        render={(props) => <JoinRoom {...props} currentRooms={DataState.rooms} />}
+                    />
+                    <Route
+                        exact
+                        path="/createRoom"
+                        render={(props) => <CreateRoom {...props} currentRooms={DataState.rooms} addRoom={DataState.addRoom} />}
+                    />
+                    <Route
+                        exact
+                        path="/room"
+                        render={(props) => <Room {...props}/>}
+                    />
+                </Switch>
+            </NativeRouter>
+        );
+    }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+// export default withAuthenticator(App)
+export default App;
