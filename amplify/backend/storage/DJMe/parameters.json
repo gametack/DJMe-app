@@ -1,7 +1,0 @@
-{
-    "tableName": "Rooms",
-    "partitionKeyName": "id",
-    "partitionKeyType": "N",
-    "sortKeyName": "owner",
-    "sortKeyType": "S"
-}
