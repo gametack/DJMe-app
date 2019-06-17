@@ -2,6 +2,9 @@ import React from 'react';
 import { View } from 'react-native';
 import { Provider as PaperProvider, Button, Text, TextInput } from 'react-native-paper';
 import { styles, theme } from '../../global-styles'
+import Amplify, { API, graphqlOperation } from "aws-amplify";
+import * as mutations from "../graphql/mutations";
+
 
 export default class CreateRoom extends React.Component {
     constructor(props) {
@@ -11,10 +14,21 @@ export default class CreateRoom extends React.Component {
         }
     }
 
-    putRoom = () => {
+    putRoom = async() => {
         let newRoom = {
             id: Math.floor(Math.random() * 200),
             name: this.state.name,
+        }
+        let roomEntry = {
+            name: this.state.name,
+            description:"test"
+        }
+        try{
+        const newTodo = await API.graphql(graphqlOperation(mutations.createRoom, {input: roomEntry}));
+console.log(newTodo);
+        }
+        catch(error){
+            console.log(error.message)
         }
 
         this.props.addRoom(newRoom)
