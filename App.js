@@ -7,16 +7,23 @@ import Home from "./src/components/home";
 import JoinRoom from './src/components/join-room'
 import CreateRoom from './src/components/create-room'
 import Room from './src/components/room'
+import Music from './src/components/music'
 import Player from './src/components/player'
 import DataStore from './src/store/domain/DataStore'
 import PSpotify from "./src/provider/spotify/spotify"
+import { Hub, Logger} from 'aws-amplify';
 
 Amplify.configure(awsConfig);
 
 const DataState = new DataStore()
 const provider = new PSpotify();
 
+
 class App extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    
     render() {
         return (
             <NativeRouter>
@@ -24,7 +31,7 @@ class App extends React.Component {
                     <Route
                         exact
                         path="/"
-                        render={(props) => <Home {...props} />}
+                        render={(props) => <Room {...props} />}
                     />
                     <Route
                         exact
@@ -43,6 +50,11 @@ class App extends React.Component {
                     />
                     <Route
                         exact
+                        path="/music"
+                        render={(props) => <Music {...props} provider={provider}/>}
+                    />
+                    <Route
+                        exact
                         path="/player"
                         render={(props) => <Player {...props} provider={provider}/>}
                     />
@@ -52,5 +64,5 @@ class App extends React.Component {
     }
 }
 
-// export default withAuthenticator(App)
-export default App;
+export default withAuthenticator(App)
+// export default App;
